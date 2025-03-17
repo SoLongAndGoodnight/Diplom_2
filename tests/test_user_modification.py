@@ -1,6 +1,8 @@
 import pytest
 import requests
 import allure
+import time
+import random
 from tests.conftest import BASE_URL, login
 
 
@@ -9,7 +11,7 @@ class TestUserModification:
     @allure.story("Modify user data with authorization")
     @pytest.mark.parametrize("field, new_value", [
         ("name", "NewName"),
-        ("email", "newemail@test.com")
+        ("email", f"newemail{int(time.time())}{random.randint(1000, 9999)}@test.com")
     ])
     def test_modify_user_data_authorized(self, login, field, new_value):
         headers = {"Authorization": f"Bearer {login}"}
@@ -25,8 +27,8 @@ class TestUserModification:
         response = requests.patch(f"{BASE_URL}/auth/user", headers=headers, json={field: new_value})
         assert response.status_code == 200, f"Expected 200, got {response.status_code}, response: {response.json()}"
         assert response.json()["success"] is True, "User data modification failed"
-        assert response.json()["user"][
-                   field] == new_value, f"Expected {new_value}, got {response.json()['user'][field]}"
+        assert response.json()["user"][field] == new_value, f"Expected {new_value}, got {response.json()['user'][field]}"
+
 
     @allure.story("Modify user data without authorization")
     def test_modify_user_data_unauthorized(self):

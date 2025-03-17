@@ -1,7 +1,7 @@
 import pytest
 import requests
 import allure
-from conftest import BASE_URL
+from tests.conftest import BASE_URL
 
 
 @allure.feature("User Registration")
