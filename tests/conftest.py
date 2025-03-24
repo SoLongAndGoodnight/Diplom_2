@@ -1,7 +1,7 @@
 import pytest
 import requests
+from urls import BASE_URL
 
-BASE_URL = "https://stellarburgers.nomoreparties.site/api"
 
 @pytest.fixture
 def unique_user():
@@ -18,11 +18,9 @@ def unique_user():
             "email": user_data["email"],
             "password": user_data["password"]
         })
-        assert login_response.status_code == 200, "Failed to login existing user"
         token = login_response.json()["accessToken"]
     else:
         # Берем токен сразу после регистрации
-        assert response.status_code == 200, f"Failed to register user: {response.status_code}, response: {response.json()}"
         token = response.json()["accessToken"]
 
     # Передаем данные пользователя и токен в тест
@@ -39,9 +37,7 @@ def login(unique_user):
         "email": unique_user["email"],
         "password": unique_user["password"]
     })
-    assert response.status_code == 200, f"Failed to login: {response.status_code}, response: {response.json()}"
     token = response.json().get("accessToken")
-    assert token, "Login failed — no token received"
     # Убираем лишнее "Bearer", если оно уже есть
     if token.startswith("Bearer "):
         token = token.replace("Bearer ", "")

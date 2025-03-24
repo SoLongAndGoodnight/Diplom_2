@@ -5,7 +5,7 @@ from tests.conftest import BASE_URL, unique_user
 
 @allure.feature("User Login")
 class TestUserLogin:
-    @allure.story("Login with valid credentials")
+    @allure.title("Login with valid credentials")
     def test_login_valid_user(self, unique_user):
         response = requests.post(f"{BASE_URL}/auth/login", json={
             "email": unique_user["email"],
@@ -14,7 +14,7 @@ class TestUserLogin:
         assert response.status_code == 200
         assert response.json()["success"] is True
 
-    @allure.story("Login with invalid credentials")
+    @allure.title("Login with invalid credentials")
     @pytest.mark.parametrize("email, password", [
         ("wrong@mail.com", "wrongpassword"),
         ("", "password123"),

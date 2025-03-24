@@ -11,6 +11,9 @@ pytest --alluredir=allure-results
 
 allure serve allure-results
 
+Проверка покрытия:
+pytest --cov=tests
+
 Установка зависимостей:
 
 pip install -r requirements.txt

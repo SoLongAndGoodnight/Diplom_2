@@ -6,13 +6,13 @@ from tests.conftest import BASE_URL
 
 @allure.feature("User Registration")
 class TestUserRegistration:
-    @allure.story("Create a unique user")
+    @allure.title("Create a unique user")
     def test_create_unique_user(self, unique_user):
         response = requests.post(f"{BASE_URL}/auth/register", json=unique_user)
         assert response.status_code == 403
         assert response.json()["message"] == "User already exists"
 
-    @allure.story("Create user with missing field")
+    @allure.title("Create user with missing field")
     @pytest.mark.parametrize("user_data", [
         {"email": "", "password": "password123", "name": "TestUser"},
         {"email": "test@mail.com", "password": "", "name": "TestUser"},
